@@ -129,7 +129,7 @@ const Index = () => {
   const heroSlides = [
     {
       image: heroImage1,
-      title: "Cha Sha Abu Dhabi",
+      title: "ChaSha Abu Dhabi",
       subtitle: "Chai jo maan ko bhaye",
     },
     {
@@ -178,6 +178,20 @@ const Index = () => {
       comment: "Amazing foood, my favorite Pakistani spot Staff are very freindly😍😍😍 thank youuu💕",
       image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
     }
+  ];
+
+  // Colorful word colors for the hero title
+  const wordColors = [
+    'text-orange-400',
+    'text-red-400', 
+    'text-green-400',
+    'text-blue-400',
+    'text-purple-400',
+    'text-yellow-400',
+    'text-pink-400',
+    'text-cyan-400',
+    'text-emerald-400',
+    'text-rose-400'
   ];
 
   const handleWhatsAppClick = () => {
@@ -298,8 +312,9 @@ const Index = () => {
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 1, duration: 0.8 }}
-                className="text-left text-white  max-w-4xl"
+                className="text-left text-white max-w-4xl"
               >
+                {/* COLORFUL HERO TITLE */}
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-3">
                   {heroSlides[currentSlide].title.split(" ").map((word, index) => (
                     <motion.span
@@ -307,14 +322,14 @@ const Index = () => {
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 1 + index * 0.2, duration: 0.5 }}
-                      className="mr-2 inline-block"
+                      className={`mr-2 inline-block ${wordColors[index % wordColors.length]} drop-shadow-lg`}
                     >
                       {word}
                     </motion.span>
                   ))}
                 </h1>
 
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 max-w-xl mb-6">
+                <p className="text-base sm:text-lg md:text-xl  lg:text-2xl text-yellow-400 max-w-xl mb-6">
                   {heroSlides[currentSlide].subtitle}
                 </p>
 
@@ -368,7 +383,7 @@ const Index = () => {
       </section>
 
       {/* About Us Section */}
-      <section id="about" className="py-20 bg-muted/30 overflow-hidden">
+      <section id="about" className="py-20 bg-muted/30  overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* LEFT SIDE - TEXT */}

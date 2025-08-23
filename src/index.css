@@ -18,6 +18,8 @@
     --popover-foreground: 0 0% 0%;
 
     /* Primary Orange - Pakistani Truck Art */
+    --shadone: oklch(28.2% 0.091 267.935);
+    --shadtwo: oklch(42.4% 0.199 265.638);
     --primary: 22 89% 52%;  /* #F37C1E */
     --primary-foreground: 0 0% 100%;
     --primary-glow: 22 100% 70%;
