@@ -66,7 +66,7 @@ export const useMenuItems = (filters = {}) => {
 // Specific hook for Best Sellers
 export const useBestSellers = (limit = null, availableOnly = true) => {
   return useMenuItems({
-    category: 'Best Seller',
+    category: 'BEST SELLERS',
     isAvailable: availableOnly,
     limit: limit
   });
