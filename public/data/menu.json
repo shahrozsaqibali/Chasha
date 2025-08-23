@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "Name": "Chicken Biryani",
+    "Description": "Aromatic basmati rice cooked with tender chicken, traditional spices, and saffron. Served with raita and salad.",
+    "Category": "Best Seller",
+    "Price": 18.0,
+    "Currency": "AED",
+    "isAvailable": true,
+    "Image": "https://b.zmtcdn.com/data/pictures/9/20819009/59b0dc8cc5f577ab070f797c149bbe6a.jpg"
+  },
+  {
+    "id": "2",
+    "Name": "Beef Nihari",
+    "Description": "Slow-cooked beef in rich, aromatic gravy with traditional spices. A true Karachi specialty.",
+    "Category": "Best Seller",
+    "Price": 21.0,
+    "Currency": "AED",
+    "isAvailable": true,
+    "Image": "https://b.zmtcdn.com/data/pictures/9/20819009/efee28f07412fda451efb1a7eab2408d.jpg"
+  },
+  {
+    "id": "5",
+    "Name": "Mutton Biryani",
+    "Description": "Fragrant basmati rice with tender mutton pieces, cooked with traditional spices.",
+    "Category": "Rice & Spice",
+    "Price": 22.0,
+    "Currency": "AED",
+    "isAvailable": true,
+    "Image": "https://b.zmtcdn.com/data/pictures/9/20819009/efee28f07412fda451efb1a7eab2408d.jpg"
+  }
+]
