@@ -307,7 +307,7 @@ const Index = () => {
           >
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60" />
             
-            <div className="relative pl-12 z-10 container mx-auto px-4 h-full flex items-center justify-start">
+            <div className="relative pl-4 sm:pl-12 z-10 container mx-auto px-4 h-full flex items-center justify-start">
               <motion.div
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -329,11 +329,12 @@ const Index = () => {
                   ))}
                 </h1>
 
-                <p className="text-base sm:text-lg md:text-xl  lg:text-2xl text-yellow-400 max-w-xl mb-6">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-yellow-400 max-w-xl mb-6">
                   {heroSlides[currentSlide].subtitle}
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-4 justify-start items-center pt-2">
+                {/* Updated button container with left alignment for mobile */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-start items-start sm:items-center pt-2">
                   <Button variant="hero" size="sm" asChild>
                     <Link to="/menu">
                       Open Menu
@@ -383,7 +384,7 @@ const Index = () => {
       </section>
 
       {/* About Us Section */}
-      <section id="about" className="py-20 bg-muted/30  overflow-hidden">
+      <section id="about" className="py-20 bg-muted/30 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* LEFT SIDE - TEXT */}

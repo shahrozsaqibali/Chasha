@@ -19,6 +19,24 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
+
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Menu', href: '/menu' },
@@ -29,11 +47,23 @@ const Header = () => {
     window.location.href = 'tel:+971507540056';
   };
 
+  const handleNavClick = (href) => {
+    setIsMenuOpen(false);
+    if (href.includes('#about') && location.pathname === '/') {
+      setTimeout(() => {
+        const element = document.querySelector('#about');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  };
+
   return (
     <header
-    className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
-      isScrolled ? 'bg-white shadow-lg border-primary/20' : 'bg-transparent border-transparent'
-    }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+        isScrolled ? 'bg-white shadow-lg border-primary/20' : 'bg-transparent border-transparent'
+      }`}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
@@ -74,53 +104,93 @@ const Header = () => {
               <span>Contact</span>
             </Button>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - Updated with color transitions */}
             <button
-              className="md:hidden p-2 rounded-lg hover:bg-primary/10 transition-colors"
+              className={`md:hidden p-2 rounded-lg transition-all duration-300 ${
+                isScrolled 
+                  ? 'hover:bg-primary/10 text-primary' 
+                  : 'hover:bg-white/10 text-white'
+              }`}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              <motion.div
+                animate={{ rotate: isMenuOpen ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </motion.div>
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation - Updated with better styling */}
         <AnimatePresence>
           {isMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden border-t border-primary/20 mt-2 pt-4 pb-4"
-            >
-              <nav className="flex flex-col space-y-4">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={`text-sm font-medium transition-colors hover:text-primary ${
-                      location.pathname === item.href
-                        ? 'text-primary'
-                        : 'text-foreground'
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/50 z-40 md:hidden"
+                onClick={() => setIsMenuOpen(false)}
+              />
+              
+              {/* Mobile Menu */}
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.2 }}
+                className="absolute left-0 right-0 top-full z-50 md:hidden bg-white shadow-xl border-t border-primary/10"
+              >
+                <nav className="flex flex-col py-6 px-4">
+                  {navigation.map((item, index) => (
+                    <motion.div
+                      key={item.name}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="mb-2"
+                    >
+                      <Link
+                        to={item.href}
+                        className={`block px-4 py-4 text-lg font-medium transition-all duration-200 rounded-lg ${
+                          location.pathname === item.href
+                            ? 'text-primary bg-primary/10 border-l-4 border-primary'
+                            : 'text-gray-700 hover:text-primary hover:bg-primary/5'
+                        }`}
+                        onClick={() => handleNavClick(item.href)}
+                      >
+                        {item.name}
+                      </Link>
+                    </motion.div>
+                  ))}
+                  
+                  {/* Contact Button in Mobile Menu */}
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: navigation.length * 0.1 }}
+                    className="mt-4 px-4"
                   >
-                    {item.name}
-                  </Link>
-                ))}
-                
-                <Button
-                  variant="contact"
-                  size="sm"
-                  onClick={handlePhoneClick}
-                  className="sm:hidden self-start"
-                >
-                  <Phone size={16} />
-                  <span>Contact</span>
-                </Button>
-              </nav>
-            </motion.div>
+                    <Button
+                      variant="contact"
+                      size="lg"
+                      onClick={() => {
+                        handlePhoneClick();
+                        setIsMenuOpen(false);
+                      }}
+                      className="w-full flex items-center justify-center space-x-2 py-4 text-base font-medium"
+                    >
+                      <Phone size={18} />
+                      <span>Contact Us</span>
+                    </Button>
+                  </motion.div>
+                </nav>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </div>
