@@ -7,96 +7,103 @@ import { Star, Clock, Users, Award, ArrowRight, MessageCircle, Phone } from 'luc
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
-import { useBestSellers } from '@/hooks/useMenuItems'; // Import the custom hook
+import { useBestSellers } from '@/hooks/useMenuItems';
 import heroImage1 from '@/assets/Landscape.png';
 import heroImage2 from '@/assets/hero-bg-2.jpg';
 import heroImage3 from '@/assets/hero-bg-3.jpg';
 import biryaniImage from '@/assets/biryani.jpg';
 import nihariImage from '@/assets/nihari.jpg';
 import karahiImage from '@/assets/karahi.jpg';
+import LogoImage from "@/assets/logo.jpg";
 
-// Preloader Component
+// Simple Logo Preloader
 const Preloader = () => {
   return (
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed inset-0 z-50 bg-gradient-to-br from-primary via-primary/90 to-accent flex items-center justify-center"
+      transition={{ duration: 0.8 }}
+      className="fixed inset-0 z-50 bg-black flex items-center justify-center"
     >
-      <div className="text-center">
-        {/* Logo with Animation */}
-        <motion.div
-          initial={{ scale: 0.5, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="mb-8"
+      <motion.div
+        className="text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        {/* Logo with Zoom In/Out Animation */}
+        <motion.img
+          src={LogoImage}
+          alt="Cha Sha Logo"
+          className="w-40 h-40 mx-auto"
+          
+        />
+        
+        {/* Logo Text */}
+        <motion.h1
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+          className="text-4xl font-bold text-white mt-4"
         >
-          <motion.img
-            src="/src/assets/logo.png" // Replace with your actual logo path
-            alt="Cha Sha Logo"
-            className="w-32 h-32 mx-auto mb-4"
-            animate={{ 
-              rotate: [0, 360],
-              scale: [1, 1.1, 1]
-            }}
-            transition={{ 
-              rotate: { duration: 3, repeat: Infinity, ease: "linear" },
-              scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-            }}
-          />
-          
-          {/* Logo Text */}
-          <motion.h1
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="text-4xl font-bold text-white mb-2"
-          >
-            Cha Sha
-          </motion.h1>
-          
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="text-white/90 text-lg"
-          >
-            Chai jo maan ko bhaye
-          </motion.p>
-        </motion.div>
-
-        {/* Loading Animation */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-          className="flex flex-col items-center"
+    چائے جو من کو بھائے
+        </motion.h1>
+        
+        <motion.p
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="text-white/80 text-lg mt-2"
         >
-          {/* Animated Dots */}
-          <div className="flex space-x-2 mb-4">
-            {[0, 1, 2].map((index) => (
-              <motion.div
-                key={index}
-                className="w-3 h-3 bg-white rounded-full"
-                animate={{ 
-                  scale: [1, 1.5, 1],
-                  opacity: [0.7, 1, 0.7]
-                }}
-                transition={{ 
-                  duration: 1.5,
-                  repeat: Infinity,
-                  delay: index * 0.2
-                }}
-              />
-            ))}
-          </div>
-          
-          <p className="text-white/80 text-sm">Loading fresh flavors...</p>
-        </motion.div>
-      </div>
+        </motion.p>
+      </motion.div>
     </motion.div>
   );
+};
+
+// Hook to preload images
+const useImagePreloader = (imageUrls) => {
+  const [loadedImages, setLoadedImages] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (imageUrls.length === 0) {
+      setIsLoading(false);
+      return;
+    }
+
+    let loadedCount = 0;
+    const totalImages = imageUrls.length;
+
+    const preloadImage = (src) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          loadedCount++;
+          setLoadedImages(loadedCount);
+          resolve();
+        };
+        img.onerror = () => {
+          loadedCount++;
+          setLoadedImages(loadedCount);
+          resolve(); // Still resolve to continue loading other images
+        };
+        img.src = src;
+      });
+    };
+
+    const loadAllImages = async () => {
+      const promises = imageUrls.map(preloadImage);
+      await Promise.all(promises);
+      setIsLoading(false);
+    };
+
+    loadAllImages();
+  }, [imageUrls]);
+
+  const progress = imageUrls.length > 0 ? (loadedImages / imageUrls.length) * 100 : 100;
+  
+  return { isLoading, progress };
 };
 
 const Index = () => {
@@ -106,25 +113,56 @@ const Index = () => {
   // Use the custom hook to fetch best sellers from Supabase
   const { menuItems: bestSellers, loading: bestSellersLoading, error: bestSellersError } = useBestSellers(6, true);
 
-  // Hide preloader when data is loaded or after minimum display time
+  // Define images to preload
+  const imagesToPreload = [
+    heroImage1,
+    heroImage2,
+    heroImage3,
+    biryaniImage,
+    nihariImage,
+    karahiImage,
+    '/src/assets/logo.png',
+    // Add Google Images from About section
+    "https://lh3.googleusercontent.com/gps-cs-s/AC9h4no-r1I0PULQ5cd-3V_1-jpFTiAOVtHWqYu8clf3Cas_uAercW8jsZggtlublx7yd0zi6MooXzuuUEuydnGwpDrG7d24g3M5jQ41VJmyhTj9y4Ehh_3NaNSF2tI73sh8R9Y8H-Ic8A=s680-w680-h510",
+    "https://lh3.googleusercontent.com/gps-cs-s/AC9h4nr2j0LajgDx32D1ywQtO1kX0YITzf3YwuF6Lx0XyWY32DJrH7KmFHr2223BetxQ030ak9ymd989VBsBZz9i8E7HS9C_Bv8Olq5kdg7HxEZMV1YGbSnxxJHMUvNJyDcD_GhrejAy=s680-w680-h510",
+    "https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrkXx3eX9gdadm9kUetJed0d0djKWPfD0AokR0QBRck-qx7GCKeVSPOJAtlkajWXONJ2OC01CBwSJBWiKfjoVfCQKOo5TJXLtPnq1frWwHeHHY2WLz5opAVgMddszX_lfFcS-f7=s680-w680-h510",
+    "https://lh3.googleusercontent.com/gps-cs-s/AC9h4nojhWZ0tHa4uWEE712P6rT-raYF3faUXWzimnDo4MqflewQZmQJYSPwJAKr2wybnHPlituoqVnADiiuFX5lU9qH4wC5Xurf92MEA-DlfSXx_hqocZtXum0ju0VzdgVfnFhJIyLW=s680-w680-h510"
+  ];
+
+  // Add best seller images to preload list
+  const allImagesToPreload = [
+    ...imagesToPreload,
+    ...bestSellers.map(item => item.Image).filter(Boolean)
+  ];
+
+  // Use image preloader hook
+  const { isLoading: imagesLoading, progress: imageProgress } = useImagePreloader(allImagesToPreload);
+
+  // Calculate overall progress
+  const dataProgress = bestSellersLoading ? 0 : 40; // 40% for data loading
+  const totalProgress = Math.min(100, imageProgress * 0.6 + dataProgress); // 60% for images, 40% for data
+
+  // Hide preloader when everything is loaded
   useEffect(() => {
-    const minLoadingTime = 2000; // Minimum 2 seconds to show the preloader
+    const minLoadingTime = 2500; // Minimum 2.5 seconds to show the preloader
     const startTime = Date.now();
     
-    if (!bestSellersLoading && bestSellers.length > 0) {
+    const shouldHidePreloader = !imagesLoading && !bestSellersLoading && bestSellers.length >= 0;
+    
+    if (shouldHidePreloader) {
       const elapsedTime = Date.now() - startTime;
       const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
       
       setTimeout(() => {
         setShowPreloader(false);
       }, remainingTime);
-    } else if (bestSellersError) {
-      // If there's an error, still hide preloader after minimum time
+    } else if (bestSellersError && !imagesLoading) {
+      // If there's an error but images are loaded, still hide preloader after minimum time
       setTimeout(() => {
         setShowPreloader(false);
       }, minLoadingTime);
     }
-  }, [bestSellersLoading, bestSellers, bestSellersError]);
+  }, [imagesLoading, bestSellersLoading, bestSellers, bestSellersError]);
 
   const heroSlides = [
     {
@@ -146,12 +184,14 @@ const Index = () => {
 
   // Auto-rotate hero slides
   useEffect(() => {
+    if (showPreloader) return; // Don't start auto-rotation until preloader is gone
+    
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
     }, 10000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [showPreloader]);
 
   const reviews = [
     {
@@ -257,7 +297,7 @@ const Index = () => {
                   alt={item.Name}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   onError={(e) => {
-                    e.target.src = '/src/assets/placeholder-dish.jpg'; // Add a placeholder image
+                    e.target.src = '/src/assets/placeholder-dish.jpg';
                   }}
                 />
                 <div className="absolute top-4 right-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
@@ -290,6 +330,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Enhanced Preloader */}
+      <AnimatePresence>
+        {showPreloader && <Preloader progress={totalProgress} />}
+      </AnimatePresence>
+
       <Header />
       <WhatsAppButton />
 
@@ -298,10 +343,10 @@ const Index = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide}
-            initial={{ opacity: 0, scale: 1.1 }}    // start zoomed in
-            animate={{ opacity: 1, scale: 1 }}      // zoom to normal
-            exit={{ opacity: 0, scale: 1 }}         // fade out, no scale change
-            transition={{ duration: 0.8, ease: 'easeOut' }} // smooth zoom
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             className="absolute inset-0 hero-slide"
             style={{ backgroundImage: `url(${heroSlides[currentSlide].image})` }}
           >
@@ -333,7 +378,6 @@ const Index = () => {
                   {heroSlides[currentSlide].subtitle}
                 </p>
 
-                {/* Updated button container with left alignment for mobile */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-start items-start sm:items-center pt-2">
                   <Button variant="hero" size="sm" asChild>
                     <Link to="/menu">
@@ -365,7 +409,6 @@ const Index = () => {
             )}
           </motion.div>
 
-          {/* Render Best Sellers Content */}
           {renderBestSellers()}
 
           <motion.div

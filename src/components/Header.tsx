@@ -37,25 +37,40 @@ const Header = () => {
     };
   }, [isMenuOpen]);
 
+  // Scroll to #about if URL contains it (for direct visits or refresh)
+  useEffect(() => {
+    if (location.hash === "#about") {
+      setTimeout(() => {
+        const element = document.querySelector("#about");
+        if (element) element.scrollIntoView({ behavior: "smooth" });
+      }, 200);
+    }
+  }, [location]);
+
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Menu', href: '/menu' },
-    { name: 'About us', href: '/#about' },
+    { name: 'About us', href: '/#about', isAbout: true },
   ];
 
   const handlePhoneClick = () => {
     window.location.href = 'tel:+971507540056';
   };
 
-  const handleNavClick = (href) => {
+  const handleNavClick = (item) => {
     setIsMenuOpen(false);
-    if (href.includes('#about') && location.pathname === '/') {
-      setTimeout(() => {
-        const element = document.querySelector('#about');
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
+
+    if (item.isAbout) {
+      if (location.pathname === "/") {
+        // Already on home → scroll smoothly
+        setTimeout(() => {
+          const element = document.querySelector("#about");
+          if (element) element.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      } else {
+        // Navigate to home#about
+        window.location.href = "/#about";
+      }
     }
   };
 
@@ -83,6 +98,7 @@ const Header = () => {
               <Link
                 key={item.name}
                 to={item.href}
+                onClick={() => handleNavClick(item)}
                 className={`text-sm font-medium transition-colors hover:text-primary ${
                   location.pathname === item.href
                     ? 'text-primary border-b-2 border-primary'
@@ -104,7 +120,7 @@ const Header = () => {
               <span>Contact</span>
             </Button>
 
-            {/* Mobile Menu Button - Updated with color transitions */}
+            {/* Mobile Menu Button */}
             <button
               className={`md:hidden p-2 rounded-lg transition-all duration-300 ${
                 isScrolled 
@@ -124,7 +140,7 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation - Updated with better styling */}
+        {/* Mobile Navigation */}
         <AnimatePresence>
           {isMenuOpen && (
             <>
@@ -161,7 +177,7 @@ const Header = () => {
                             ? 'text-primary bg-primary/10 border-l-4 border-primary'
                             : 'text-gray-700 hover:text-primary hover:bg-primary/5'
                         }`}
-                        onClick={() => handleNavClick(item.href)}
+                        onClick={() => handleNavClick(item)}
                       >
                         {item.name}
                       </Link>
