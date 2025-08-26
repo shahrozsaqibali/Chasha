@@ -272,6 +272,13 @@
     bottom: 140px;
     right: 15px;
   }
+
+  .zomato-button{
+    background: transparent;
+    bottom: 200px;
+    right: 15px;
+  }
+  
 }
 
 @media (max-width: 480px) {
