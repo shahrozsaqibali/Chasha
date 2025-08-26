@@ -10,9 +10,9 @@ import WhatsAppButton from '@/components/WhatsAppButton';
 import { useBestSellers } from '@/hooks/useMenuItems';
 
 // Direct image URLs for better reliability
-const heroImage1 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_auto,q_auto,w_1600/Landscape_m7mdav.jpg';
-const heroImage2 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_auto,q_auto,w_1600/hero-bg-2_nlpjqs.jpg';
-const heroImage3 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_auto,q_auto,w_1600/hero-bg-3_ljj14z.jpg';
+const heroImage1 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_webp,q_auto,w_1600/Landscape_m7mdav.jpg';
+const heroImage2 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_webp,q_auto,w_1600/hero-bg-2_nlpjqs.jpg';
+const heroImage3 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_webp,q_auto,w_1600/hero-bg-3_ljj14z.jpg';
 
 import LogoImage from "@/assets/logo.jpg";
 
