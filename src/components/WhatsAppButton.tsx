@@ -1,7 +1,7 @@
 import { MessageCircle } from 'lucide-react';
 
 import talabatLogo from '../assets/talabat_logo.png';
-import noonLogo from '../assets/noon_logo.png';
+import noonLogo from '../assets/noon_logo.svg';
 
 const DeliveryButtons = () => {
   const phoneNumber = "+971507540056";
