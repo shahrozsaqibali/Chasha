@@ -80,7 +80,7 @@ const Header = () => {
         isScrolled ? 'bg-white shadow-lg border-primary/20' : 'bg-transparent border-transparent'
       }`}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 mt-0.5">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">

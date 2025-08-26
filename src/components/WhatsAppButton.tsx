@@ -1,7 +1,7 @@
 import { MessageCircle } from 'lucide-react';
-
 import talabatLogo from '../assets/talabat_logo.png';
 import noonLogo from '../assets/noon_logo.svg';
+import zomatoLogo from "../assets/zomato_logo.svg";
 
 const DeliveryButtons = () => {
   const phoneNumber = "+971507540056";
@@ -10,12 +10,17 @@ const DeliveryButtons = () => {
 
   const handleTalabatClick = () => {
     // Replace with your actual Talabat restaurant URL
-    window.open('https://www.talabat.com/', '_blank');
+    window.open('https://www.talabat.com/uae/restaurant/735100/cha-sha-restaurant-al-khalidiyah?aid=6485', '_blank');
   };
 
   const handleNoonClick = () => {
     // Replace with your actual Noon Food restaurant URL  
-    window.open('https://www.noon.com/food/', '_blank');
+    window.open('https://food.noon.com/uae-en/outlet/CHSHRSN5TM/', '_blank');
+  };
+
+  const handleZomatoClick = () => {
+    // Replace with your actual Noon Food restaurant URL  
+    window.open('https://www.zomato.com/abudhabi/cha-sha-al-khalidiya', '_blank');
   };
 
   return (
@@ -56,6 +61,21 @@ const DeliveryButtons = () => {
           className="delivery-logo-image" 
         />
       </button>
+
+      {/**Zomato Button*/}
+      <button
+        onClick={handleZomatoClick}
+        className="delivery-button zomato-button"
+        aria-label="Order from Zomato Food"
+      >
+        <img 
+          src={zomatoLogo} 
+          alt="Zomato Food" 
+          className="delivery-logo-image" 
+        />
+      </button>
+
+
     </>
   );
 };

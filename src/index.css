@@ -224,6 +224,12 @@
   right: 20px;
 }
 
+.zomato-button{
+  background: transparent;
+  bottom: 230px;
+  right: 20px;
+}
+
 .delivery-logo {
   font-size: 24px;
   font-weight: bold;

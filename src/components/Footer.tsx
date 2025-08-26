@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { MapPin, Clock, Phone, Mail } from 'lucide-react';
+import { FaTiktok, FaInstagram } from 'react-icons/fa';
 import LogoImage from '@/assets/logo.jpg';
 
 const Footer = () => {
@@ -14,7 +15,7 @@ const Footer = () => {
     <footer className="bg-secondary text-secondary-foreground">
       {/* Decorative Truck Art Border */}
       <div className="h-2 bg-gradient-to-r from-primary via-accent to-primary"></div>
-      
+
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Logo & Description */}
@@ -30,11 +31,29 @@ const Footer = () => {
             <p className="text-muted-foreground">
               Authentic Pakistani cuisine with the flavors of Karachi. Experience the taste of tradition.
             </p>
-            
+
+            {/* Social Media Links */}
+            <div className="flex space-x-4 mt-4">
+              <a
+                href="https://www.tiktok.com/discover/cha-sha-restaurant-abu-dhabi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary transition-colors"
+              >
+                <FaTiktok size={20} />
+              </a>
+              <a
+                href="https://www.instagram.com/chasha.ae"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-primary transition-colors"
+              >
+                <FaInstagram size={20} />
+              </a>
+            </div>
           </div>
 
           {/* Contact Info */}
-
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-primary">Contact Us</h3>
             <div className="space-y-3">
@@ -44,13 +63,19 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone size={16} className="text-primary" />
-                <a href="tel:+97125868221" className="text-sm hover:text-primary transition-colors">
+                <a
+                  href="tel:+971507540056"
+                  className="text-sm hover:text-primary transition-colors"
+                >
                   +971507540056
                 </a>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail size={16} className="text-primary" />
-                <a href="mailto:info@chasha.ae" className="text-sm hover:text-primary transition-colors">
+                <a
+                  href="mailto:info@chasha.ae"
+                  className="text-sm hover:text-primary transition-colors"
+                >
                   info@chasha.ae
                 </a>
               </div>
