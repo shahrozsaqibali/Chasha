@@ -178,21 +178,107 @@
     transform: rotate(180deg);
   }
 
-  .whatsapp-float {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    z-index: 1000;
-    background: #25D366;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
-    transition: var(--transition-spring);
+  /* Delivery Buttons CSS */
+
+.delivery-button {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+  text-decoration: none;
+  outline: none;
+}
+
+.delivery-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.delivery-button:active {
+  transform: scale(0.95);
+}
+
+.whatsapp-button {
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  bottom: 20px;
+  right: 20px;
+}
+
+.talabat-button {
+  background: transparent;
+  bottom: 90px;
+  right: 20px;
+}
+
+.noon-button {
+  background: transparent;
+  bottom: 160px;
+  right: 20px;
+}
+
+.delivery-logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  font-family: Arial, sans-serif;
+  user-select: none;
+}
+
+.delivery-logo-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: none;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .delivery-button {
+    width: 50px;
+    height: 50px;
   }
+  
+  .delivery-logo-image {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .whatsapp-button {
+    bottom: 20px;
+    right: 15px;
+  }
+  
+  .talabat-button {
+    bottom: 80px;
+    right: 15px;
+  }
+  
+  .noon-button {
+    bottom: 140px;
+    right: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .delivery-button {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .delivery-logo-image {
+    width: 45px;
+    height: 45px;
+  }
+}
 
   .whatsapp-float:hover {
     transform: scale(1.1);
