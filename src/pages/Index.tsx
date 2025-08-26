@@ -8,12 +8,12 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import { useBestSellers } from '@/hooks/useMenuItems';
-import heroImage1 from '@/assets/Landscape.png';
-import heroImage2 from '@/assets/hero-bg-2.jpg';
-import heroImage3 from '@/assets/hero-bg-3.jpg';
-import biryaniImage from '@/assets/biryani.jpg';
-import nihariImage from '@/assets/nihari.jpg';
-import karahiImage from '@/assets/karahi.jpg';
+
+// Direct image URLs for better reliability
+const heroImage1 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_auto,q_auto,w_1600/Landscape_m7mdav.jpg';
+const heroImage2 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_auto,q_auto,w_1600/hero-bg-2_nlpjqs.jpg';
+const heroImage3 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_auto,q_auto,w_1600/hero-bg-3_ljj14z.jpg';
+
 import LogoImage from "@/assets/logo.jpg";
 
 // Simple Logo Preloader
@@ -36,7 +36,6 @@ const Preloader = () => {
           src={LogoImage}
           alt="Cha Sha Logo"
           className="w-40 h-40 mx-auto"
-          
         />
         
         {/* Logo Text */}
@@ -46,7 +45,7 @@ const Preloader = () => {
           transition={{ delay: 0.3, duration: 0.8 }}
           className="text-4xl font-bold text-white mt-4"
         >
-    چائے جو من کو بھائے
+          چائے جو من کو بھائے
         </motion.h1>
         
         <motion.p
@@ -113,15 +112,11 @@ const Index = () => {
   // Use the custom hook to fetch best sellers from Supabase
   const { menuItems: bestSellers, loading: bestSellersLoading, error: bestSellersError } = useBestSellers(6, true);
 
-  // Define images to preload
+  // Define images to preload - fixed to remove undefined references
   const imagesToPreload = [
     heroImage1,
     heroImage2,
     heroImage3,
-    biryaniImage,
-    nihariImage,
-    karahiImage,
-    '/src/assets/logo.png',
     // Add Google Images from About section
     "https://lh3.googleusercontent.com/gps-cs-s/AC9h4no-r1I0PULQ5cd-3V_1-jpFTiAOVtHWqYu8clf3Cas_uAercW8jsZggtlublx7yd0zi6MooXzuuUEuydnGwpDrG7d24g3M5jQ41VJmyhTj9y4Ehh_3NaNSF2tI73sh8R9Y8H-Ic8A=s680-w680-h510",
     "https://lh3.googleusercontent.com/gps-cs-s/AC9h4nr2j0LajgDx32D1ywQtO1kX0YITzf3YwuF6Lx0XyWY32DJrH7KmFHr2223BetxQ030ak9ymd989VBsBZz9i8E7HS9C_Bv8Olq5kdg7HxEZMV1YGbSnxxJHMUvNJyDcD_GhrejAy=s680-w680-h510",
@@ -338,7 +333,7 @@ const Index = () => {
       <Header />
       <WhatsAppButton />
 
-      {/* Hero Section */}
+      {/* Fixed Hero Section */}
       <section className="relative h-screen overflow-hidden bg-black">
         <AnimatePresence mode="wait">
           <motion.div
@@ -347,26 +342,32 @@ const Index = () => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="absolute inset-0 hero-slide"
-            style={{ backgroundImage: `url(${heroSlides[currentSlide].image})` }}
+            className="absolute inset-0"
           >
+            {/* Use img element instead of background-image for better reliability */}
+            <img 
+              src={heroSlides[currentSlide].image}
+              alt={heroSlides[currentSlide].title}
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{ objectPosition: 'center center' }}
+            />
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60" />
             
             <div className="relative pl-4 sm:pl-12 z-10 container mx-auto px-4 h-full flex items-center justify-start">
               <motion.div
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 1, duration: 0.8 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
                 className="text-left text-white max-w-4xl"
               >
                 {/* COLORFUL HERO TITLE */}
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-3">
                   {heroSlides[currentSlide].title.split(" ").map((word, index) => (
                     <motion.span
-                      key={index}
+                      key={`${currentSlide}-${index}`} // Add currentSlide to key for proper animation
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 1 + index * 0.2, duration: 0.5 }}
+                      transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
                       className={`mr-2 inline-block ${wordColors[index % wordColors.length]} drop-shadow-lg`}
                     >
                       {word}
@@ -389,6 +390,21 @@ const Index = () => {
             </div>
           </motion.div>
         </AnimatePresence>
+
+        {/* Slide indicators */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+          {heroSlides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                currentSlide === index 
+                  ? 'bg-white scale-125' 
+                  : 'bg-white/50 hover:bg-white/75'
+              }`}
+            />
+          ))}
+        </div>
       </section>
 
       {/* Best Sellers Section */}
