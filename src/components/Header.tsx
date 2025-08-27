@@ -14,7 +14,6 @@ const Header = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -31,7 +30,6 @@ const Header = () => {
     } else {
       document.body.style.overflow = 'unset';
     }
-
     return () => {
       document.body.style.overflow = 'unset';
     };
@@ -59,7 +57,6 @@ const Header = () => {
 
   const handleNavClick = (item) => {
     setIsMenuOpen(false);
-
     if (item.isAbout) {
       if (location.pathname === "/") {
         // Already on home → scroll smoothly
@@ -77,7 +74,7 @@ const Header = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
-        isScrolled ? 'bg-white shadow-lg border-primary/20' : 'bg-transparent border-transparent'
+        isScrolled || isMenuOpen ? 'bg-white shadow-lg border-primary/20' : 'bg-transparent border-transparent'
       }`}
     >
       <div className="container mx-auto px-4 mt-0.5">
@@ -102,7 +99,7 @@ const Header = () => {
                 className={`text-sm font-medium transition-colors hover:text-primary ${
                   location.pathname === item.href
                     ? 'text-primary border-b-2 border-primary'
-                    : isScrolled ? 'text-primary' : 'text-white'
+                    : (isScrolled || isMenuOpen) ? 'text-primary' : 'text-white'
                 }`}
               >
                 {item.name}
@@ -123,7 +120,7 @@ const Header = () => {
             {/* Mobile Menu Button */}
             <button
               className={`md:hidden p-2 rounded-lg transition-all duration-300 ${
-                isScrolled 
+                (isScrolled || isMenuOpen)
                   ? 'hover:bg-primary/10 text-primary' 
                   : 'hover:bg-white/10 text-white'
               }`}
@@ -149,7 +146,8 @@ const Header = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/50 z-40 md:hidden"
+                className="fixed left-0 right-0 bottom-0 bg-black/50 z-40 md:hidden"
+                style={{ top: 'calc(100% + 1px)' }}
                 onClick={() => setIsMenuOpen(false)}
               />
               
@@ -159,7 +157,7 @@ const Header = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.2 }}
-                className="absolute left-0 right-0 top-full z-50 md:hidden bg-white shadow-xl border-t border-primary/10"
+                className="absolute left-0 right-0 top-full z-50 md:hidden bg-white shadow-xl"
               >
                 <nav className="flex flex-col py-6 px-4">
                   {navigation.map((item, index) => (
