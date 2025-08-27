@@ -16,6 +16,49 @@ const heroImage3 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_webp,q_a
 
 import LogoImage from "@/assets/logo.jpg";
 
+// Cache Manager for preloader state
+class PreloaderCache {
+  static CACHE_KEY = 'chasha_preloader_cache';
+  static CACHE_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
+  
+  static shouldShowPreloader() {
+    try {
+      const cached = JSON.parse(sessionStorage.getItem(this.CACHE_KEY) || '{}');
+      const now = Date.now();
+      
+      // Check if cache exists and is still valid
+      if (cached.timestamp && (now - cached.timestamp) < this.CACHE_DURATION) {
+        return false; // Don't show preloader if cache is valid
+      }
+      
+      return true; // Show preloader if no cache or cache expired
+    } catch (error) {
+      console.warn('Error reading preloader cache:', error);
+      return true; // Show preloader on error
+    }
+  }
+  
+  static setPreloaderShown() {
+    try {
+      const cacheData = {
+        timestamp: Date.now(),
+        shown: true
+      };
+      sessionStorage.setItem(this.CACHE_KEY, JSON.stringify(cacheData));
+    } catch (error) {
+      console.warn('Error setting preloader cache:', error);
+    }
+  }
+  
+  static clearCache() {
+    try {
+      sessionStorage.removeItem(this.CACHE_KEY);
+    } catch (error) {
+      console.warn('Error clearing preloader cache:', error);
+    }
+  }
+}
+
 // Simple Logo Preloader
 const Preloader = () => {
   return (
@@ -60,13 +103,14 @@ const Preloader = () => {
   );
 };
 
-// Hook to preload images
-const useImagePreloader = (imageUrls) => {
+// Enhanced Image Preloader Hook with Caching
+const useImagePreloader = (imageUrls, shouldPreload = true) => {
   const [loadedImages, setLoadedImages] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(shouldPreload);
+  const [cachedImages, setCachedImages] = useState(new Set());
 
   useEffect(() => {
-    if (imageUrls.length === 0) {
+    if (!shouldPreload || imageUrls.length === 0) {
       setIsLoading(false);
       return;
     }
@@ -75,11 +119,20 @@ const useImagePreloader = (imageUrls) => {
     const totalImages = imageUrls.length;
 
     const preloadImage = (src) => {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
+        // Check if image is already in browser cache
+        if (cachedImages.has(src)) {
+          loadedCount++;
+          setLoadedImages(loadedCount);
+          resolve();
+          return;
+        }
+
         const img = new Image();
         img.onload = () => {
           loadedCount++;
           setLoadedImages(loadedCount);
+          setCachedImages(prev => new Set([...prev, src]));
           resolve();
         };
         img.onerror = () => {
@@ -98,7 +151,7 @@ const useImagePreloader = (imageUrls) => {
     };
 
     loadAllImages();
-  }, [imageUrls]);
+  }, [imageUrls, shouldPreload, cachedImages]);
 
   const progress = imageUrls.length > 0 ? (loadedImages / imageUrls.length) * 100 : 100;
   
@@ -107,7 +160,8 @@ const useImagePreloader = (imageUrls) => {
 
 const Index = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [showPreloader, setShowPreloader] = useState(true);
+  const [shouldShowPreloader, setShouldShowPreloader] = useState(() => PreloaderCache.shouldShowPreloader());
+  const [showPreloader, setShowPreloader] = useState(shouldShowPreloader);
   
   // Use the custom hook to fetch best sellers from Supabase
   const { menuItems: bestSellers, loading: bestSellersLoading, error: bestSellersError } = useBestSellers(6, true);
@@ -130,15 +184,24 @@ const Index = () => {
     ...bestSellers.map(item => item.Image).filter(Boolean)
   ];
 
-  // Use image preloader hook
-  const { isLoading: imagesLoading, progress: imageProgress } = useImagePreloader(allImagesToPreload);
+  // Use image preloader hook - only preload if we should show preloader
+  const { isLoading: imagesLoading, progress: imageProgress } = useImagePreloader(
+    allImagesToPreload, 
+    shouldShowPreloader
+  );
 
   // Calculate overall progress
-  const dataProgress = bestSellersLoading ? 0 : 40; // 40% for data loading
+  const dataProgress = (!shouldShowPreloader || !bestSellersLoading) ? 40 : 0; // 40% for data loading
   const totalProgress = Math.min(100, imageProgress * 0.6 + dataProgress); // 60% for images, 40% for data
 
   // Hide preloader when everything is loaded
   useEffect(() => {
+    if (!shouldShowPreloader) {
+      // If we shouldn't show preloader, hide it immediately
+      setShowPreloader(false);
+      return;
+    }
+
     const minLoadingTime = 2500; // Minimum 2.5 seconds to show the preloader
     const startTime = Date.now();
     
@@ -150,14 +213,16 @@ const Index = () => {
       
       setTimeout(() => {
         setShowPreloader(false);
+        PreloaderCache.setPreloaderShown(); // Mark preloader as shown in cache
       }, remainingTime);
     } else if (bestSellersError && !imagesLoading) {
       // If there's an error but images are loaded, still hide preloader after minimum time
       setTimeout(() => {
         setShowPreloader(false);
+        PreloaderCache.setPreloaderShown(); // Mark preloader as shown even on error
       }, minLoadingTime);
     }
-  }, [imagesLoading, bestSellersLoading, bestSellers, bestSellersError]);
+  }, [imagesLoading, bestSellersLoading, bestSellers, bestSellersError, shouldShowPreloader]);
 
   const heroSlides = [
     {
@@ -240,7 +305,7 @@ const Index = () => {
 
   // Render Best Sellers Content
   const renderBestSellers = () => {
-    if (bestSellersLoading) {
+    if (bestSellersLoading && shouldShowPreloader) {
       return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {[...Array(6)].map((_, index) => (
@@ -325,7 +390,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Enhanced Preloader */}
+      {/* Enhanced Preloader - Only shows when needed */}
       <AnimatePresence>
         {showPreloader && <Preloader progress={totalProgress} />}
       </AnimatePresence>
@@ -420,7 +485,7 @@ const Index = () => {
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Discover our most loved dishes that keep customers coming back for more
             </p>
-            {bestSellersLoading && (
+            {bestSellersLoading && shouldShowPreloader && (
               <p className="text-sm text-muted-foreground mt-2">Loading fresh from our kitchen...</p>
             )}
           </motion.div>
