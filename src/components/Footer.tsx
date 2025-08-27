@@ -67,7 +67,7 @@ const Footer = () => {
                   href="tel:+971507540056"
                   className="text-sm hover:text-primary transition-colors"
                 >
-                  +971507540056
+                   +971 25868221
                 </a>
               </div>
               <div className="flex items-center space-x-3">
@@ -90,8 +90,7 @@ const Footer = () => {
                 <Clock size={16} className="text-primary" />
                 <div className="text-sm">
                   <div>Mon - Thu: 08:30 AM - 11:00 PM</div>
-                  <div>Fri - Sat: 08:30 AM - 11:00 PM</div>
-                  <div>Sunday: 08:30 AM - 11:00 PM</div>
+                  <div>Fri - Sat: 08:30 AM - 12:00 PM</div>
                 </div>
               </div>
             </div>

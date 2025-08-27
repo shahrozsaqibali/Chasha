@@ -86,7 +86,7 @@ const Menu = () => {
     const total = cart.total.toFixed(2);
     const message = `🍽️ New Order from Chasha Menu!\n\n📋 Order Details:\n${orderSummary}\n\n💰 Total: AED ${total}\n\nPlease confirm this order and let me know the delivery time. Thank you!`;
     
-    window.open(`https://wa.me/971507540056?text=${encodeURIComponent(message)}`, '_blank');
+    window.open(`https://wa.me/923431048001?text=${encodeURIComponent(message)}`, '_blank');
     setIsCartOpen(false);
   };
 

@@ -54,7 +54,7 @@ const Header = () => {
   ];
 
   const handlePhoneClick = () => {
-    window.location.href = 'tel:+971507540056';
+    window.location.href = 'tel:+97125868221';
   };
 
   const handleNavClick = (item) => {
