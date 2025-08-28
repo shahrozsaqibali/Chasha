@@ -8,6 +8,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import { useBestSellers } from '@/hooks/useMenuItems';
+import TwickSection from "../components/TwikSection"
 
 // Direct image URLs for better reliability
 const heroImage1 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_webp,q_auto,w_1600/Landscape_m7mdav.jpg';
@@ -303,90 +304,124 @@ const Index = () => {
     window.open('https://www.google.com/search?sca_esv=869098bf9f856b8f&sxsrf=AE3TifMJzMm-EpX3IhXoU4PKq2gV1DYw3g:1755950001953&q=chasha&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E_Q9hdkmh0-hWmYl1OWASXztUSkVfR6Kv15DnIXC4vK61p0Yg84gyiSQaVTmwJ_ph5xeRrUogwVBPvmKYWuyzzlLLA_6c70SDDf5h08VSUC4siAUzQ%3D%3D&sa=X&ved=2ahUKEwidm_DA76CPAxX4-QIHHTCLE9cQrrQLegQIJRAA&biw=1366&bih=607&dpr=1#lrd=0x3e5e67628444cb29:0x2bb4fc9da30da468,3,,,,', '_blank');
   };
 
+
+  
+
+
   // Render Best Sellers Content
-  const renderBestSellers = () => {
-    if (bestSellersLoading && shouldShowPreloader) {
-      return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {[...Array(6)].map((_, index) => (
-            <Card key={index} className="truck-art-border animate-pulse">
-              <div className="h-48 bg-muted rounded-t-lg"></div>
-              <CardContent className="p-6">
-                <div className="h-4 bg-muted rounded mb-2"></div>
-                <div className="h-3 bg-muted rounded w-3/4 mb-2"></div>
-                <div className="h-6 bg-muted rounded w-1/4"></div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      );
-    }
+function truncateWords(text: string, wordLimit: number) {
+  const words = text.split(" ")
+  if (words.length <= wordLimit) return text
+  return words.slice(0, wordLimit).join(" ") + "..."
+}
 
-    if (bestSellersError) {
-      return (
-        <div className="text-center py-12">
-          <p className="text-destructive text-lg mb-4">Error loading best sellers: {bestSellersError}</p>
-          <Button variant="outline" onClick={() => window.location.reload()}>
-            Try Again
-          </Button>
-        </div>
-      );
-    }
-
-    if (bestSellers.length === 0) {
-      return (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground text-lg">No best sellers available at the moment.</p>
-        </div>
-      );
-    }
-
+const renderBestSellers = () => {
+  if (bestSellersLoading && shouldShowPreloader) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        {bestSellers.map((item, index) => (
-          <motion.div
-            key={item.id}
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: index * 0.2, duration: 0.8 }}
-          >
-            <Card className="truck-art-border hover:shadow-xl transition-all duration-300 overflow-hidden">
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={item.Image}
-                  alt={item.Name}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  onError={(e) => {
-                    e.target.src = '/src/assets/placeholder-dish.jpg';
-                  }}
-                />
-                <div className="absolute top-4 right-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
-                  {item.Currency} {item.Price}
-                </div>
-                {!item.isAvailable && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                    <span className="text-white font-semibold">Currently Unavailable</span>
-                  </div>
-                )}
-              </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-primary mb-2">{item.Name}</h3>
-                <p className="text-muted-foreground mb-4 line-clamp-2">{item.Description}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-primary font-medium">{item.Category}</span>
-                  <div className="flex items-center space-x-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={16} className="fill-accent text-accent" />
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+        {[...Array(6)].map((_, index) => (
+          <Card key={index} className="truck-art-border animate-pulse">
+            <div className="h-48 bg-muted rounded-t-lg"></div>
+            <CardContent className="p-6">
+              <div className="h-4 bg-muted rounded mb-2"></div>
+              <div className="h-3 bg-muted rounded w-3/4 mb-2"></div>
+              <div className="h-6 bg-muted rounded w-1/4"></div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     );
-  };
+  }
+
+  if (bestSellersError) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-destructive text-lg mb-4">
+          Error loading best sellers: {bestSellersError}
+        </p>
+        <Button variant="outline" onClick={() => window.location.reload()}>
+          Try Again
+        </Button>
+      </div>
+    );
+  }
+
+  if (bestSellers.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-muted-foreground text-lg">
+          No best sellers available at the moment.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <>
+   
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+      {bestSellers.map((item, index) => (
+        <motion.div
+          key={item.id}
+          initial={{ y: 50, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ delay: index * 0.2, duration: 0.8 }}
+        >
+          <Card className="truck-art-border hover:shadow-xl transition-all duration-300 overflow-hidden">
+            {/* Image wrapper */}
+            <div className="relative aspect-[3/2] w-full bg-white overflow-hidden">
+  <img
+    src={item.Image}
+    alt={item.Name}
+    className="w-full h-full object-cover transition-transform duration-300"
+    onError={(e) => {
+      (e.currentTarget as HTMLImageElement).src =
+        "/src/assets/placeholder-dish.jpg";
+    }}
+  />
+  <div className="absolute top-4 right-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
+    {item.Currency} {item.Price}
+  </div>
+  {!item.isAvailable && (
+    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+      <span className="text-white font-semibold">Currently Unavailable</span>
+    </div>
+  )}
+</div>
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold text-primary mb-2">
+                {item.Name}
+              </h3>
+              {/* Description with truncation */}
+              <p
+                className="text-muted-foreground mb-4"
+                title={item.Description}
+              >
+                {truncateWords(item.Description, 7)}
+              </p>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-primary font-medium">
+                  {item.Category}
+                </span>
+                <div className="flex items-center space-x-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      size={16}
+                      className="fill-accent text-accent"
+                    />
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      ))}
+    </div>
+    </>
+  );
+};
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -406,7 +441,7 @@ const Index = () => {
             initial={{ opacity: 0, scale: 1.1 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
             className="absolute inset-0"
           >
             {/* Use img element instead of background-image for better reliability */}
@@ -456,7 +491,7 @@ const Index = () => {
           </motion.div>
         </AnimatePresence>
 
-        {/* Slide indicators */}
+        {/* Slide indicators 
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
           {heroSlides.map((_, index) => (
             <button
@@ -469,7 +504,7 @@ const Index = () => {
               }`}
             />
           ))}
-        </div>
+        </div>*/}
       </section>
 
       {/* Best Sellers Section */}

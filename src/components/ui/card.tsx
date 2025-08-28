@@ -1,6 +1,12 @@
 import * as React from "react"
-
 import { cn } from "@/lib/utils"
+
+// helper to truncate description
+function truncateWords(text: string, wordLimit: number) {
+  const words = text.split(" ")
+  if (words.length <= wordLimit) return text
+  return words.slice(0, wordLimit).join(" ") + "..."
+}
 
 const Card = React.forwardRef<
   HTMLDivElement,
@@ -47,13 +53,21 @@ CardTitle.displayName = "CardTitle"
 const CardDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-  <p
-    ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
-    {...props}
-  />
-))
+>(({ className, children, ...props }, ref) => {
+  const text = typeof children === "string" ? children : ""
+  const truncated = truncateWords(text, 9)
+
+  return (
+    <p
+      ref={ref}
+      className={cn("text-sm text-muted-foreground", className)}
+      title={text} // full description on hover
+      {...props}
+    >
+      {truncated}
+    </p>
+  )
+})
 CardDescription.displayName = "CardDescription"
 
 const CardContent = React.forwardRef<
@@ -76,4 +90,25 @@ const CardFooter = React.forwardRef<
 ))
 CardFooter.displayName = "CardFooter"
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+// 👇 New: CardImage component
+const CardImage = React.forwardRef<
+  HTMLImageElement,
+  React.ImgHTMLAttributes<HTMLImageElement>
+>(({ className, ...props }, ref) => (
+  <img
+    ref={ref}
+    className={cn("w-full h-auto object-contain rounded-lg", className)}
+    {...props}
+  />
+))
+CardImage.displayName = "CardImage"
+
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardImage,
+}

@@ -95,12 +95,19 @@ const Menu = () => {
     return cartItem ? cartItem.quantity : 0;
   };
 
+  // Function to truncate description to specified word limit
+  const truncateWords = (text: string, wordLimit: number) => {
+    const words = text.split(" ");
+    if (words.length <= wordLimit) return text;
+    return words.slice(0, wordLimit).join(" ") + "...";
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
 
       {/* Restaurant Header */}
-      <section className="pt-24 pb-12 bg-gradient-to-r from-primary to-accent text-white">
+      <section className="pt-24 pb-12 text-white" style={{ backgroundColor: '#1e0a01' }}>
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ y: 30, opacity: 0 }}
@@ -108,16 +115,31 @@ const Menu = () => {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">Menu</h1>
+
+            
+          <img
+                src="https://res.cloudinary.com/dy5mtu23k/image/upload/truck-front_avnw0s.webp"
+                alt="Menu Banner Trcuk front"
+                className="h-[12rem] w-[12rem]  mx-auto block"
+              />
+          
+
+            <img 
+                src='https://res.cloudinary.com/dy5mtu23k/image/upload/ChaSha_-_Revised_Prices_-_Dine_Final_Version_1_tdax65.webp'
+                alt='Menu Name'
+                className='h-24 w-auto mx-auto ' />
+
+          
+            {/*<h1 className="text-2xl md:text-4xl font-bold mb-4">Menu</h1>
             <p className="text-xl text-white/90 max-w-2xl mx-auto">
-            دیکھ مگر پیار سے
-            </p>
-            <div className="flex items-center justify-center space-x-2 mt-6">
+            <strong>دیکھ مگر پیار سے</strong>
+            </p>*/}
+            {/*<div className="flex items-center justify-center space-x-2 mt-6">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} size={20} className="fill-white text-white" />
               ))}
               <span className="ml-2 font-semibold">4.9/5 Rating</span>
-            </div>
+            </div>*/}
           </motion.div>
         </div>
       </section>
@@ -146,9 +168,20 @@ const Menu = () => {
       {loading && (
         <section className="py-12">
           <div className="container mx-auto px-4">
-            <div className="text-center">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-              <p className="mt-4 text-muted-foreground">Loading delicious menu items...</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[...Array(6)].map((_, index) => (
+                <Card key={index} className="truck-art-border animate-pulse">
+                  <div className="bg-muted rounded-t-lg" style={{ aspectRatio: '1920/1280' }}></div>
+                  <CardContent className="p-6">
+                    <div className="h-4 bg-muted rounded mb-2"></div>
+                    <div className="h-3 bg-muted rounded w-3/4 mb-4"></div>
+                    <div className="flex justify-between items-center">
+                      <div className="h-3 bg-muted rounded w-1/4"></div>
+                      <div className="h-6 bg-muted rounded w-1/3"></div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </section>
@@ -186,7 +219,8 @@ const Menu = () => {
                     transition={{ delay: index * 0.1, duration: 0.6 }}
                   >
                     <Card className="truck-art-border hover:shadow-xl transition-all duration-300 overflow-hidden">
-                      <div className="relative h-48 overflow-hidden">
+                      {/* Image wrapper with forced 1920x1280 aspect ratio */}
+                      <div className="relative w-full bg-white overflow-hidden" style={{ aspectRatio: '1920/1280' }}>
                         <img
                           src={item.Image}
                           alt={item.Name}
@@ -200,6 +234,11 @@ const Menu = () => {
                         <div className="absolute top-4 right-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
                           {item.Currency} {item.Price}
                         </div>
+                        {!item.isAvailable && (
+                          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                            <span className="text-white font-semibold">Currently Unavailable</span>
+                          </div>
+                        )}
                       </div>
                       
                       <CardContent className="p-6">
@@ -210,17 +249,24 @@ const Menu = () => {
                           </Badge>
                         </div>
                         
-                        <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                          {item.Description}
+                        {/* Description with truncation and tooltip */}
+                        <p
+                          className="text-muted-foreground mb-4 text-sm leading-relaxed cursor-help"
+                          title={item.Description}
+                        >
+                          {truncateWords(item.Description, 7)}
                         </p>
                         
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between mb-4">
+                         
                           <div className="flex items-center space-x-1">
                             {[...Array(5)].map((_, i) => (
                               <Star key={i} size={14} className="fill-accent text-accent" />
                             ))}
                           </div>
-                          
+                        </div>
+                        
+                        <div className="flex items-center justify-end">
                           <div className="flex items-center space-x-2">
                             {getItemQuantity(item.id) > 0 ? (
                               <div className="flex items-center space-x-2">
@@ -228,6 +274,7 @@ const Menu = () => {
                                   size="sm"
                                   variant="outline"
                                   onClick={() => updateQuantity(item.id, getItemQuantity(item.id) - 1)}
+                                  disabled={!item.isAvailable}
                                 >
                                   <Minus size={16} />
                                 </Button>
@@ -238,6 +285,7 @@ const Menu = () => {
                                   size="sm"
                                   variant="default"
                                   onClick={() => addItem(item)}
+                                  disabled={!item.isAvailable}
                                 >
                                   <Plus size={16} />
                                 </Button>
@@ -247,9 +295,10 @@ const Menu = () => {
                                 size="sm"
                                 variant="truck"
                                 onClick={() => addItem(item)}
+                                disabled={!item.isAvailable}
                               >
                                 <Plus size={16} className="mr-1" />
-                                Add
+                                {item.isAvailable ? 'Add' : 'Unavailable'}
                               </Button>
                             )}
                           </div>
