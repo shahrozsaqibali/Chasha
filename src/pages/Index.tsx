@@ -14,7 +14,7 @@ const heroImage1 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_webp,q_a
 const heroImage2 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_webp,q_auto,w_1600/hero-bg-2_nlpjqs.jpg';
 const heroImage3 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_webp,q_auto,w_1600/hero-bg-3_ljj14z.jpg';
 
-import LogoImage from "@/assets/logo.jpg";
+import LogoImage from "@/assets/logo.webp";
 
 // Cache Manager for preloader state
 class PreloaderCache {
@@ -78,7 +78,7 @@ const Preloader = () => {
         <motion.img
           src={LogoImage}
           alt="Cha Sha Logo"
-          className="w-40 h-40 mx-auto"
+          className="w-60 h-60 mx-auto"
         />
         
         {/* Logo Text */}
@@ -88,7 +88,7 @@ const Preloader = () => {
           transition={{ delay: 0.3, duration: 0.8 }}
           className="text-4xl font-bold text-white mt-4"
         >
-          چائے جو من کو بھائے
+          
         </motion.h1>
         
         <motion.p
