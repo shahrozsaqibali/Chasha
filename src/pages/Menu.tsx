@@ -8,7 +8,10 @@ import { Plus, Minus, ShoppingCart, MessageCircle, Star } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useCart, MenuItem } from '@/contexts/CartContext';
-import { supabase } from '@/lib/supabaseClient'; // Import Supabase client
+import { supabase } from '@/lib/supabaseClient';
+import fallbackData from '@/hooks/fallback_data.json'; 
+// ✅ Flag to switch between Supabase and fallback JSON
+const USE_FALLBACK = true; 
 
 const Menu = () => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
@@ -18,7 +21,6 @@ const Menu = () => {
   const [categories, setCategories] = useState<string[]>(['All']);
   const { cart, addItem, removeItem, updateQuantity, clearCart, getItemCount } = useCart();
 
-  // Load menu items from Supabase
   useEffect(() => {
     loadMenuItems();
   }, []);
@@ -26,66 +28,82 @@ const Menu = () => {
   const loadMenuItems = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('menu_items')
-        .select('*')
-        .order('name', { ascending: true });
+      let transformedData: MenuItem[] = [];
 
-      if (error) {
-        throw error;
+      if (USE_FALLBACK) {
+        // ✅ Load from fallback JSON
+        transformedData = fallbackData.map(item => ({
+          id: item.id,
+          Name: item.name,
+          Description: item.description,
+          Category: item.category,
+          Price: parseFloat(item.price),
+          Currency: item.currency,
+          isAvailable: item.is_available,
+          Image: item.image || '/placeholder-dish.jpg'
+        }));
+      } else {
+        // ✅ Load from Supabase
+        const { data, error } = await supabase
+          .from('menu_items')
+          .select('*')
+          .order('name', { ascending: true });
+
+        if (error) throw error;
+
+        transformedData = data.map(item => ({
+          id: item.id,
+          Name: item.name,
+          Description: item.description,
+          Category: item.category,
+          Price: parseFloat(item.price),
+          Currency: item.currency,
+          isAvailable: item.is_available,
+          Image: item.image || '/placeholder-dish.jpg'
+        }));
       }
-
-      // Transform Supabase data to match your MenuItem interface
-      const transformedData: MenuItem[] = data.map(item => ({
-        id: item.id,
-        Name: item.name,
-        Description: item.description,
-        Category: item.category,
-        Price: parseFloat(item.price),
-        Currency: item.currency,
-        isAvailable: item.is_available,
-        Image: item.image || '/placeholder-dish.jpg' // Fallback image
-      }));
 
       setMenuItems(transformedData);
 
-      // Extract unique categories from AVAILABLE items only and add "All" option
+      // Extract categories from available items
       const availableItems = transformedData.filter(item => item.isAvailable);
       const uniqueCategories = Array.from(new Set(availableItems.map(item => item.Category)));
       setCategories(['All', ...uniqueCategories]);
 
-      // If current selected category has no available items, switch to "All"
+      // Reset category if it no longer has items
       if (selectedCategory !== 'All') {
         const hasAvailableItemsInCategory = availableItems.some(item => item.Category === selectedCategory);
         if (!hasAvailableItemsInCategory) {
           setSelectedCategory('All');
         }
       }
-
     } catch (error) {
       console.error('Error loading menu items:', error);
-      // You might want to show a toast notification here
-      // For now, we'll just log the error
+      setMenuItems([]); // fallback to empty if error
     } finally {
       setLoading(false);
     }
   };
 
   // Filter items based on selected category and availability
-  const filteredItems = selectedCategory === 'All' 
-    ? menuItems.filter(item => item.isAvailable) // Only show available items
-    : menuItems.filter(item => item.Category === selectedCategory && item.isAvailable);
+  const filteredItems =
+    selectedCategory === 'All'
+      ? menuItems.filter(item => item.isAvailable)
+      : menuItems.filter(item => item.Category === selectedCategory && item.isAvailable);
 
   const handleCheckout = () => {
     if (cart.items.length === 0) return;
 
-    const orderSummary = cart.items.map(item => 
-      `${item.quantity}x ${item.Name} - ${item.Currency} ${(item.Price * item.quantity).toFixed(2)}`
-    ).join('\n');
+    const orderSummary = cart.items
+      .map(
+        item =>
+          `${item.quantity}x ${item.Name} - ${item.Currency} ${(item.Price * item.quantity).toFixed(2)}`
+      )
+      .join('\n');
 
     const total = cart.total.toFixed(2);
     const message = `🍽️ New Order from Chasha Menu!\n\n📋 Order Details:\n${orderSummary}\n\n💰 Total: AED ${total}\n\nPlease confirm this order and let me know the delivery time. Thank you!`;
-    
+
     window.open(`https://wa.me/923431048001?text=${encodeURIComponent(message)}`, '_blank');
     setIsCartOpen(false);
   };
@@ -95,11 +113,11 @@ const Menu = () => {
     return cartItem ? cartItem.quantity : 0;
   };
 
-  // Function to truncate description to specified word limit
+  // Truncate description helper
   const truncateWords = (text: string, wordLimit: number) => {
-    const words = text.split(" ");
+    const words = text.split(' ');
     if (words.length <= wordLimit) return text;
-    return words.slice(0, wordLimit).join(" ") + "...";
+    return words.slice(0, wordLimit).join(' ') + '...';
   };
 
   return (
@@ -115,31 +133,17 @@ const Menu = () => {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
+            <img
+              src="https://res.cloudinary.com/dy5mtu23k/image/upload/truck-front_avnw0s.webp"
+              alt="Menu Banner Truck front"
+              className="h-[12rem] w-[12rem] mx-auto block"
+            />
 
-            
-          <img
-                src="https://res.cloudinary.com/dy5mtu23k/image/upload/truck-front_avnw0s.webp"
-                alt="Menu Banner Trcuk front"
-                className="h-[12rem] w-[12rem]  mx-auto block"
-              />
-          
-
-            <img 
-                src='https://res.cloudinary.com/dy5mtu23k/image/upload/ChaSha_-_Revised_Prices_-_Dine_Final_Version_1_tdax65.webp'
-                alt='Menu Name'
-                className='h-24 w-auto mx-auto ' />
-
-          
-            {/*<h1 className="text-2xl md:text-4xl font-bold mb-4">Menu</h1>
-            <p className="text-xl text-white/90 max-w-2xl mx-auto">
-            <strong>دیکھ مگر پیار سے</strong>
-            </p>*/}
-            {/*<div className="flex items-center justify-center space-x-2 mt-6">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={20} className="fill-white text-white" />
-              ))}
-              <span className="ml-2 font-semibold">4.9/5 Rating</span>
-            </div>*/}
+            <img
+              src="https://res.cloudinary.com/dy5mtu23k/image/upload/ChaSha_-_Revised_Prices_-_Dine_Final_Version_1_tdax65.webp"
+              alt="Menu Name"
+              className="h-24 w-auto mx-auto"
+            />
           </motion.div>
         </div>
       </section>
@@ -148,10 +152,10 @@ const Menu = () => {
       <section className="sticky top-16 z-40 bg-background/95 backdrop-blur-md border-b border-primary/20 py-4">
         <div className="container mx-auto px-4">
           <div className="flex overflow-x-auto space-x-2 pb-2">
-            {categories.map((category) => (
+            {categories.map(category => (
               <Button
                 key={category}
-                variant={selectedCategory === category ? "truck" : "outline"}
+                variant={selectedCategory === category ? 'truck' : 'outline'}
                 size="sm"
                 onClick={() => setSelectedCategory(category)}
                 className="whitespace-nowrap"
@@ -194,14 +198,15 @@ const Menu = () => {
             {filteredItems.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground text-lg">
-                  {menuItems.length === 0 
-                    ? 'No menu items available at the moment' 
-                    : `No items available in ${selectedCategory === 'All' ? 'any category' : selectedCategory} category`
-                  }
+                  {menuItems.length === 0
+                    ? 'No menu items available at the moment'
+                    : `No items available in ${
+                        selectedCategory === 'All' ? 'any category' : selectedCategory
+                      } category`}
                 </p>
                 {selectedCategory !== 'All' && (
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     onClick={() => setSelectedCategory('All')}
                     className="mt-4"
                   >
@@ -219,16 +224,17 @@ const Menu = () => {
                     transition={{ delay: index * 0.1, duration: 0.6 }}
                   >
                     <Card className="truck-art-border hover:shadow-xl transition-all duration-300 overflow-hidden">
-                      {/* Image wrapper with forced 1920x1280 aspect ratio */}
-                      <div className="relative w-full bg-white overflow-hidden" style={{ aspectRatio: '1920/1280' }}>
+                      {/* Image wrapper */}
+                      <div
+                        className="relative w-full bg-white overflow-hidden"
+                        style={{ aspectRatio: '1920/1280' }}
+                      >
                         <img
                           src={item.Image}
                           alt={item.Name}
                           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                          onError={(e) => {
-                            // Handle image loading errors with a placeholder
-                            const target = e.target as HTMLImageElement;
-                            target.src = '/placeholder-dish.jpg';
+                          onError={e => {
+                            (e.target as HTMLImageElement).src = '/placeholder-dish.jpg';
                           }}
                         />
                         <div className="absolute top-4 right-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
@@ -240,7 +246,7 @@ const Menu = () => {
                           </div>
                         )}
                       </div>
-                      
+
                       <CardContent className="p-6">
                         <div className="flex items-start justify-between mb-2">
                           <h3 className="text-xl font-bold text-primary">{item.Name}</h3>
@@ -248,24 +254,22 @@ const Menu = () => {
                             {item.Category}
                           </Badge>
                         </div>
-                        
-                        {/* Description with truncation and tooltip */}
+
                         <p
                           className="text-muted-foreground mb-4 text-sm leading-relaxed cursor-help"
                           title={item.Description}
                         >
                           {truncateWords(item.Description, 7)}
                         </p>
-                        
+
                         <div className="flex items-center justify-between mb-4">
-                         
                           <div className="flex items-center space-x-1">
                             {[...Array(5)].map((_, i) => (
                               <Star key={i} size={14} className="fill-accent text-accent" />
                             ))}
                           </div>
                         </div>
-                        
+
                         <div className="flex items-center justify-end">
                           <div className="flex items-center space-x-2">
                             {getItemQuantity(item.id) > 0 ? (
@@ -273,7 +277,9 @@ const Menu = () => {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  onClick={() => updateQuantity(item.id, getItemQuantity(item.id) - 1)}
+                                  onClick={() =>
+                                    updateQuantity(item.id, getItemQuantity(item.id) - 1)
+                                  }
                                   disabled={!item.isAvailable}
                                 >
                                   <Minus size={16} />
@@ -325,27 +331,29 @@ const Menu = () => {
               View Cart ({getItemCount()}) - AED {cart.total.toFixed(2)}
             </Button>
           </DrawerTrigger>
-          
+
           <DrawerContent className="max-h-[80vh]">
             <DrawerHeader>
               <DrawerTitle className="text-2xl font-bold text-primary">Your Order</DrawerTitle>
             </DrawerHeader>
-            
+
             <div className="p-6 overflow-y-auto">
               {cart.items.length === 0 ? (
                 <p className="text-center text-muted-foreground py-8">Your cart is empty</p>
               ) : (
                 <div className="space-y-4">
-                  {cart.items.map((item) => (
-                    <div key={item.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-muted/30 rounded-xl space-y-3 sm:space-y-0">
+                  {cart.items.map(item => (
+                    <div
+                      key={item.id}
+                      className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-muted/30 rounded-xl space-y-3 sm:space-y-0"
+                    >
                       <div className="flex items-center space-x-4 flex-1 min-w-0">
                         <img
                           src={item.Image}
                           alt={item.Name}
                           className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.src = '/placeholder-dish.jpg';
+                          onError={e => {
+                            (e.target as HTMLImageElement).src = '/placeholder-dish.jpg';
                           }}
                         />
                         <div className="flex-1 min-w-0">
@@ -358,7 +366,7 @@ const Menu = () => {
                           </p>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center justify-between sm:justify-end space-x-2 flex-shrink-0">
                         <div className="flex items-center space-x-2">
                           <Button
@@ -392,13 +400,13 @@ const Menu = () => {
                       </div>
                     </div>
                   ))}
-                  
+
                   <div className="border-t border-primary/20 pt-6 mt-6">
                     <div className="flex justify-between items-center text-xl font-bold text-primary mb-6">
                       <span>Total:</span>
                       <span>AED {cart.total.toFixed(2)}</span>
                     </div>
-                    
+
                     <div className="flex flex-col sm:flex-row gap-4">
                       <Button
                         variant="outline"

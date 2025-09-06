@@ -8,7 +8,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import { useBestSellers } from '@/hooks/useMenuItems';
-import TwickSection from "../components/TwikSection"
+//import TwickSection from "../components/TwikSection"
+
 
 // Direct image URLs for better reliability
 const heroImage1 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_webp,q_auto,w_1600/Landscape_m7mdav.jpg';

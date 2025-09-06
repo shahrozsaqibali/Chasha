@@ -1,0 +1,282 @@
+[
+    {
+      "id": "46c3063e-8af4-4912-bc16-495fdafeda31",
+      "name": "Aloo Paratha",
+      "description": "A Flavorful Potato Fiesta!",
+      "category": "PARATHAS",
+      "price": "9",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316178/CHA_SHA_RESTAURANT_Aloo_Paratha_Kent-13165_yx41zy.jpg"
+    },
+    {
+      "id": "2e77da18-1045-4ca7-a10a-6f0fee7f2932",
+      "name": "Aloo Samosa",
+      "description": "Pakistani aloo samosas are special because of their perfectly spiced potato filling, which is a mix of cumin, coriander, turmeric, and green chilies. The crispy, golden pastry contrasts beautifully with the soft, flavorful potatoes inside. These samosas are a beloved snack in Pakistan, often enjoyed with tangy tamarind or mint chutney and are especially popular during Ramadan and festive occasions, bringing comfort and warmth to every bite.",
+      "category": "SNACKS",
+      "price": "2",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756360086/Screenshot_2025-03-02_214837_dkhezw.png"
+    },
+    {
+      "id": "92eb4b09-03de-4e44-9469-e05e30768006",
+      "name": "Anda Channay",
+      "description": "A Perfect Blend of Protein and Spice!",
+      "category": "",
+      "price": "7",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316179/CHA_SHA_RESTAURANT_Anda_Channay_Kent-13209_v42xwy.jpg"
+    },
+    {
+      "id": "2",
+      "name": "Beef Nihari",
+      "description": "Slow-cooked beef in rich, aromatic gravy with traditional spices. A true Karachi specialty.",
+      "category": "BEST SELLERS",
+      "price": "21",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://b.zmtcdn.com/data/pictures/9/20819009/efee28f07412fda451efb1a7eab2408d.jpg"
+    },
+    {
+      "id": "f501a478-b9c6-449f-9d7e-67152feee414",
+      "name": "Chana Chat",
+      "description": "Pakistani Chana Chaat with yogurt is special for its refreshing and tangy combination of chickpeas, yogurt, onions,",
+      "category": "SNACKS",
+      "price": "10",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756360086/Screenshot_2025-03-02_215407_ukvlbx.png"
+    },
+    {
+      "id": "c3c207b9-5a2e-44ea-b573-6a89e7f767d8",
+      "name": "Cheese Omelette",
+      "description": "A Melty Marvel of Morning Delight!",
+      "category": "BREAKFAST",
+      "price": "5",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316178/CHA_SHA_RESTAURANT_Cheese_Omelette_Kent-13248_bb4ckg.jpg"
+    },
+    {
+      "id": "ae3c173a-19ec-4d57-9e2e-639229976651",
+      "name": "Cheese Paratha",
+      "description": "Indulgence wrapped in every bite!",
+      "category": "BEST SELLERS",
+      "price": "13",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316178/CHA_SHA_RESTAURANT_Cheese_Paratha_Kent-13167_d3tcv8.jpg"
+    },
+    {
+      "id": "1",
+      "name": "Chicken Biryani",
+      "description": "Aromatic basmati rice cooked with tender chicken, traditional spices, and saffron. Served with raita and salad.",
+      "category": "BEST SELLERS",
+      "price": "18.0",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://b.zmtcdn.com/data/pictures/9/20819009/59b0dc8cc5f577ab070f797c149bbe6a.jpg"
+    },
+    {
+      "id": "fe9cb161-da6a-4b7c-b89d-03a52c3895d7",
+      "name": "Chicken Cheese Paratha",
+      "description": "Savory Delight in Every Bite!",
+      "category": "PARATHAS",
+      "price": "14",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316181/CHA_SHA_RESTAURANT_Chicken_Cheese_Paratha_Kent-13243_vdrq93.jpg"
+    },
+    {
+      "id": "883210af-efb3-4f36-a0d8-832a01a7a520",
+      "name": "Cream & Honey Paratha",
+      "description": "Sweet Bliss in Every Fold!",
+      "category": "PARATHAS",
+      "price": "12",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316181/CHA_SHA_RESTAURANT_Cream_Honey_Paratha_Kent-13194_iztzx7.jpg"
+    },
+    {
+      "id": "6062e59f-5e6d-4ab5-b082-4a7007202337",
+      "name": "Dahi Bhalle",
+      "description": "\"Dahi Bhalle\" is a popular Karachi street food consisting of deep-fried lentil dumplings served with yogurt, tamarind",
+      "category": "SNACKS",
+      "price": "10",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316178/CHA_SHA_RESTAURANT__Dahi_Bhalle_Kent-13230_xxytcg.jpg"
+    },
+    {
+      "id": "a24fd083-537c-4294-8710-55c9c08884b9",
+      "name": "Dilpasand Meethay Bhalle",
+      "description": "Dilpasand Meethay Bhakke is a beloved Pakistani treat featuring sweetened lentil dumplings soaked in syrup and often",
+      "category": "SNACKS",
+      "price": "10",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316181/CHA_SHA_RESTAURANT_Dilpasand_Meethay_Bhalle_Kent-13235_lhiimw.jpg"
+    },
+    {
+      "id": "27ab5224-4eb3-46a4-a8fe-458a29c32c59",
+      "name": "Doodh Patti",
+      "description": "Doodh Patti, translating to milk and tea leaves is a cherished Pakistani beverage renowned for its rich, creamy texture",
+      "category": "KARAK",
+      "price": "4",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316181/CHA_SHA_RESTAURANT_Doodh_Pati_Kent-13263_jbrvmq.jpg"
+    },
+    {
+      "id": "287adb0c-4712-4d87-ad47-8a0bd2bf3d5f",
+      "name": "Halwa Prui",
+      "description": "Sweet Indulgence for Breakfast Bliss!\"",
+      "category": "BEST SELLERS",
+      "price": "12",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316181/CHA_SHA_RESTAURANT_Halwa_Prui_Kent-13171_k5mp61.jpg"
+    },
+    {
+      "id": "3062f61e-2585-40c8-895e-2f216e7b8e71",
+      "name": "KARACHI BUN",
+      "description": "Flavorful Bites of Street Food Bliss!",
+      "category": "SNACKS",
+      "price": "8",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316185/CHA_SHA_RESTAURANT_Karachi_Bun_Kabab_Kent-13206_h6odmv.jpg"
+    },
+    {
+      "id": "6bd45756-6c7d-4d63-8004-cae9540a5f49",
+      "name": "Keema Cheese Paratha",
+      "description": "Keema Cheese",
+      "category": "PARATHAS",
+      "price": "13",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316182/CHA_SHA_RESTAURANT_Keema_Cheese__Kent-13157_ixoi4j.jpg"
+    },
+    {
+      "id": "407725e9-770d-4d78-a60f-735a4ffa1d56",
+      "name": "Keema Paratha",
+      "description": "Blend of Keema with Paratha!",
+      "category": "PARATHAS",
+      "price": "15",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316183/CHA_SHA_RESTAURANT_Keema_Paratha_Kent-13161_pan1jq.jpg"
+    },
+    {
+      "id": "646093f7-6100-4b07-9984-a9927a763087",
+      "name": "Kheer",
+      "description": "Creamy Comfort in Every Spoonful!",
+      "category": "DESSERTS",
+      "price": "6",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316182/CHA_SHA_RESTAURANT_Kheer_Angle_2_Kent-13153_brlglj.jpg"
+    },
+    {
+      "id": "493502cb-48f5-4b00-b921-3e963cc1c5f5",
+      "name": "Lacha Paratha",
+      "description": "\"Pakistan Lacha Paratha: Layers of Flavour, Tradition, and Delight!\"",
+      "category": "PARATHAS",
+      "price": "2",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316183/CHA_SHA_RESTAURANT_Lacha_Paratha_Kent-13201_qanof8.jpg"
+    },
+    {
+      "id": "f5e35210-fa29-4594-a784-60c62962fc8e",
+      "name": "Lahori Chanay",
+      "description": "A Taste of Tradition, Spiced with Flavor!",
+      "category": "BREAKFAST",
+      "price": "5",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316183/CHA_SHA_RESTAURANT_Lahori_Chanay_Kent-13215_mqgiut.jpg"
+    },
+    {
+      "id": "5",
+      "name": "Mutton Biryani",
+      "description": "Fragrant basmati rice with tender mutton pieces, cooked with traditional spices.",
+      "category": "BEST SELLERS",
+      "price": "22",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://b.zmtcdn.com/data/pictures/9/20819009/efee28f07412fda451efb1a7eab2408d.jpg"
+    },
+    {
+      "id": "e390d561-7172-41c5-b6f4-367810b030d8",
+      "name": "Namkeen Lassi           ",
+      "description": "Salty, Savory, Satisfaction!\"",
+      "category": "",
+      "price": "5",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316184/CHA_SHA_RESTAURANT_Namkeen_Lassi_Kent-13188_odcmdq.jpg"
+    },
+    {
+      "id": "77f06434-1e5e-4ed7-a463-4d188fe3f6bf",
+      "name": "Omelette",
+      "description": "Fluffy, Flavorful, and Always Satisfying!",
+      "category": "",
+      "price": "3",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316178/CHA_SHA_RESTAURANT_Omelette__Kent-13246_uhhv77.jpg"
+    },
+    {
+      "id": "235375c1-7838-4616-8ab7-9157e7c34cd5",
+      "name": "Omelette Paratha",
+      "description": "A Pefect Blend of Fluffy egg and Flaky Paratha!",
+      "category": "PARATHAS",
+      "price": "7",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316179/CHA_SHA_RESTAURANT_Omelette_Paratha_Kent-13184_kgdpsk.jpg"
+    },
+    {
+      "id": "19a5bbb4-2339-446e-865a-db188eabcbee",
+      "name": "Pizza Paratha",
+      "description": "A Fusion of Flavors, A Bite of Delight!",
+      "category": "BEST SELLERS",
+      "price": "17",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316180/CHA_SHA_RESTAURANT_Pizza_Paratha_Kent-13154_c3qnyx.jpg"
+    },
+    {
+      "id": "2191d6f5-5e40-4e53-b7b5-fd64fc16fc2c",
+      "name": "Quetta Karak Large",
+      "description": "A Journey of Taste",
+      "category": "BEST SELLERS",
+      "price": "5",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316180/CHA_SHA_RESTAURANT_Quetta_Karak_Chai_Kent-13259_kvknz9.jpg"
+    },
+    {
+      "id": "f2e0501e-fba7-4523-b4e7-8c88e1f66b41",
+      "name": "Sindhi Beef Biryani",
+      "description": "A Taste of Heritage in Every Bite!",
+      "category": "BEST SELLERS",
+      "price": "20",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316180/CHA_SHA_RESTAURANT_Sindhi_Beef_Biryani_Kent-13224_lscrh6.jpg"
+    },
+    {
+      "id": "f009b3b2-3e3f-4279-a097-1813cc685d6a",
+      "name": "Sweet Lassi",
+      "description": "Savor the Creamy Bliss!",
+      "category": "",
+      "price": "5",
+      "currency": "AED",
+      "is_available": true,
+      "image": "https://res.cloudinary.com/dtycbozok/image/upload/v1756316182/CHA_SHA_RESTAURANT_Sweet_Lassi_Kent-13178_p3nbl8.jpg"
+    }
+  ]
