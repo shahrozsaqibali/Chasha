@@ -467,36 +467,22 @@ return (
     `,
   }}
 >
-  {(() => {
-    const words = heroSlides[currentSlide].title.split(" ");
-    const totalChars = words.join("").length; // count all characters (no spaces)
-    const maxDuration = 2.5; // seconds
-    const perCharDelay = maxDuration / totalChars;
-
-    return words.map((word, wordIndex) => (
-      <span key={`word-${currentSlide}-${wordIndex}`} className="inline-block mr-2">
-        {word.split("").map((char, charIndex) => {
-          const charPosition =
-            words.slice(0, wordIndex).join("").length + charIndex; // position in sentence
-          return (
-            <motion.span
-              key={`char-${currentSlide}-${wordIndex}-${charIndex}`}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{
-                delay: charPosition * perCharDelay,
-                duration: 0.35,
-              }}
-              className={`inline-block ${wordColors[wordIndex % wordColors.length]}`}
-            >
-              {char}
-            </motion.span>
-          );
-        })}
-      </span>
-    ));
-  })()}
+  {heroSlides[currentSlide].title.split(" ").map((word, wordIndex) => (
+    <motion.span
+      key={`word-${currentSlide}-${wordIndex}`}
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{
+        delay: wordIndex * 0.3, // stagger each word by 0.3s
+        duration: 0.5,
+      }}
+      className={`inline-block mr-2 ${wordColors[wordIndex % wordColors.length]}`}
+    >
+      {word}
+    </motion.span>
+  ))}
 </h1>
+
 
 
 
