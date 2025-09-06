@@ -250,7 +250,7 @@ const Index = () => {
     
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 10000);
+    }, 2500);
 
     return () => clearInterval(timer);
   }, [showPreloader]);
