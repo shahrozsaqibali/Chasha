@@ -10,7 +10,6 @@ import WhatsAppButton from '@/components/WhatsAppButton';
 import { useBestSellers } from '@/hooks/useMenuItems';
 //import TwickSection from "../components/TwikSection"
 
-
 // Direct image URLs for better reliability
 const heroImage1 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_webp,q_auto,w_1600/Landscape_m7mdav.jpg';
 const heroImage2 = 'https://res.cloudinary.com/dy5mtu23k/image/upload/f_webp,q_auto,w_1600/hero-bg-2_nlpjqs.jpg';
@@ -161,6 +160,7 @@ const useImagePreloader = (imageUrls, shouldPreload = true) => {
 };
 
 const Index = () => {
+ 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [shouldShowPreloader, setShouldShowPreloader] = useState(() => PreloaderCache.shouldShowPreloader());
   const [showPreloader, setShowPreloader] = useState(shouldShowPreloader);
@@ -229,7 +229,7 @@ const Index = () => {
   const heroSlides = [
     {
       image: heroImage1,
-      title: "ChaSha Abu Dhabi",
+      title: "ChaSha Abu-Dhabi",
       subtitle: "Chai jo maan ko bhaye",
     },
     {
@@ -250,7 +250,7 @@ const Index = () => {
     
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 2500);
+    }, 3000);
 
     return () => clearInterval(timer);
   }, [showPreloader]);
@@ -304,10 +304,6 @@ const Index = () => {
   const handleGoogleReview = () => {
     window.open('https://www.google.com/search?sca_esv=869098bf9f856b8f&sxsrf=AE3TifMJzMm-EpX3IhXoU4PKq2gV1DYw3g:1755950001953&q=chasha&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E_Q9hdkmh0-hWmYl1OWASXztUSkVfR6Kv15DnIXC4vK61p0Yg84gyiSQaVTmwJ_ph5xeRrUogwVBPvmKYWuyzzlLLA_6c70SDDf5h08VSUC4siAUzQ%3D%3D&sa=X&ved=2ahUKEwidm_DA76CPAxX4-QIHHTCLE9cQrrQLegQIJRAA&biw=1366&bih=607&dpr=1#lrd=0x3e5e67628444cb29:0x2bb4fc9da30da468,3,,,,', '_blank');
   };
-
-
-  
-
 
   // Render Best Sellers Content
 function truncateWords(text: string, wordLimit: number) {
@@ -423,8 +419,7 @@ const renderBestSellers = () => {
   );
 };
 
-
-  return (
+return (
     <div className="min-h-screen bg-background">
       {/* Enhanced Preloader - Only shows when needed */}
       <AnimatePresence>
@@ -462,19 +457,48 @@ const renderBestSellers = () => {
                 className="text-left text-white max-w-4xl"
               >
                 {/* COLORFUL HERO TITLE */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-3">
-                  {heroSlides[currentSlide].title.split(" ").map((word, index) => (
-                    <motion.span
-                      key={`${currentSlide}-${index}`} // Add currentSlide to key for proper animation
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
-                      className={`mr-2 inline-block ${wordColors[index % wordColors.length]} drop-shadow-lg`}
-                    >
-                      {word}
-                    </motion.span>
-                  ))}
-                </h1>
+                <h1
+  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight mb-3 relative z-10"
+  style={{
+    textShadow: `
+      3px 3px 6px rgba(0,0,0,0.7),
+      0 0 10px rgba(0,0,0,0.5),
+      0 0 15px rgba(255,255,255,0.25)
+    `,
+  }}
+>
+  {(() => {
+    const words = heroSlides[currentSlide].title.split(" ");
+    const totalChars = words.join("").length; // count all characters (no spaces)
+    const maxDuration = 2.5; // seconds
+    const perCharDelay = maxDuration / totalChars;
+
+    return words.map((word, wordIndex) => (
+      <span key={`word-${currentSlide}-${wordIndex}`} className="inline-block mr-2">
+        {word.split("").map((char, charIndex) => {
+          const charPosition =
+            words.slice(0, wordIndex).join("").length + charIndex; // position in sentence
+          return (
+            <motion.span
+              key={`char-${currentSlide}-${wordIndex}-${charIndex}`}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{
+                delay: charPosition * perCharDelay,
+                duration: 0.35,
+              }}
+              className={`inline-block ${wordColors[wordIndex % wordColors.length]}`}
+            >
+              {char}
+            </motion.span>
+          );
+        })}
+      </span>
+    ));
+  })()}
+</h1>
+
+
 
                 <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-yellow-400 max-w-xl mb-6">
                   {heroSlides[currentSlide].subtitle}
