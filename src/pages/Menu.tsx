@@ -11,7 +11,7 @@ import { useCart, MenuItem } from '@/contexts/CartContext';
 import { supabase } from '@/lib/supabaseClient';
 import fallbackData from '@/hooks/fallback_data.json'; 
 // ✅ Flag to switch between Supabase and fallback JSON
-const USE_FALLBACK = true; 
+const USE_FALLBACK = false; 
 
 const Menu = () => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
