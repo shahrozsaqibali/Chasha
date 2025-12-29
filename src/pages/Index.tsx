@@ -8,6 +8,11 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import { useBestSellers } from '@/hooks/useMenuItems';
+import aboutImage1 from "../assets/about_image_1.jpg"
+import aboutImage2 from "../assets/about_image_2.jpg"
+import aboutImage3 from "../assets/about_image_3.jpg"
+import aboutImage4 from "../assets/about_image_4.jpg"
+
 //import TwickSection from "../components/TwikSection"
 
 // Direct image URLs for better reliability
@@ -607,26 +612,30 @@ return (
               transition={{ duration: 0.8 }}
               className="grid grid-cols-2 gap-4 relative w-full max-w-full overflow-hidden"
             >
-              <img
-                src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4no-r1I0PULQ5cd-3V_1-jpFTiAOVtHWqYu8clf3Cas_uAercW8jsZggtlublx7yd0zi6MooXzuuUEuydnGwpDrG7d24g3M5jQ41VJmyhTj9y4Ehh_3NaNSF2tI73sh8R9Y8H-Ic8A=s680-w680-h510"
+              <Link to={"https://www.instagram.com/p/C8gjCnAyEB7/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ=="}> <img
+                src={aboutImage1}
                 alt="Dish 1"
                 className="rounded-2xl shadow-lg object-cover h-56 w-full max-w-full"
-              />
+              /> </Link>
+              <Link to={"https://www.instagram.com/p/C-QkHgZSXLI/?hl=en&img_index=1"}>
               <img
-                src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nr2j0LajgDx32D1ywQtO1kX0YITzf3YwuF6Lx0XyWY32DJrH7KmFHr2223BetxQ030ak9ymd989VBsBZz9i8E7HS9C_Bv8Olq5kdg7HxEZMV1YGbSnxxJHMUvNJyDcD_GhrejAy=s680-w680-h510"
+                src={aboutImage2}
                 alt="Dish 2"
                 className="rounded-2xl shadow-lg object-cover h-72 w-full max-w-full mt-8"
-              />
+              /></Link>
+
+              <Link to={"https://www.instagram.com/p/DAiruHLP6y5/?hl=en"}>
               <img
-                src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrkXx3eX9gdadm9kUetJed0d0djKWPfD0AokR0QBRck-qx7GCKeVSPOJAtlkajWXONJ2OC01CBwSJBWiKfjoVfCQKOo5TJXLtPnq1frWwHeHHY2WLz5opAVgMddszX_lfFcS-f7=s680-w680-h510"
+                src={aboutImage3}
                 alt="Dish 3"
                 className="rounded-2xl shadow-lg object-cover h-72 w-full max-w-full"
-              />
+              /></Link>
+              <Link to={"https://www.instagram.com/p/Cz8-Kn6P3bF/?hl=en"}>
               <img
-                src="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nojhWZ0tHa4uWEE712P6rT-raYF3faUXWzimnDo4MqflewQZmQJYSPwJAKr2wybnHPlituoqVnADiiuFX5lU9qH4wC5Xurf92MEA-DlfSXx_hqocZtXum0ju0VzdgVfnFhJIyLW=s680-w680-h510"
+                src={aboutImage4}
                 alt="Dish 4"
                 className="rounded-2xl shadow-lg object-cover h-56 w-full max-w-full mt-8"
-              />
+              /></Link>
             </motion.div>
           </div>
         </div>
