@@ -4,7 +4,7 @@ import noonLogo from '../assets/noon_logo.svg';
 import instaLogo from "../assets/instagram_logo.svg";
 
 const DeliveryButtons = () => {
-  const phoneNumber = "+923431048001";
+  const phoneNumber = "+971541823119";
   const message = "Hello! I'm interested in your delicious food. Can you help me place an order?";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
