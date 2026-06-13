@@ -15,7 +15,6 @@ import { useToast } from '@/hooks/use-toast';
 import { MenuItem } from '@/contexts/CartContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import WhatsAppButton from '@/components/WhatsAppButton';
 import { supabase } from '@/lib/supabaseClient'; // Import Supabase client
 
 // Helper function to generate UUID
@@ -275,7 +274,6 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <WhatsAppButton />
 
       {/* Admin Header */}
       <section className="pt-24 pb-8 bg-gradient-to-r from-primary to-accent text-white">
@@ -291,7 +289,13 @@ const Admin = () => {
               <p className="text-white/90">Welcome back, {user?.name}!</p>
             </div>
             <div className="flex items-center space-x-4 mt-4 md:mt-0">
-              <Button variant="secondary" onClick={downloadJSON} className="flex items-center space-x-2" disabled={loading}>
+              <Button
+                variant="secondary"
+                onClick={downloadJSON}
+                className="flex items-center space-x-2"
+                disabled={loading}
+                style={{ display: 'none' }}
+              >
                 <Download size={16} />
                 <span>Download JSON</span>
               </Button>
